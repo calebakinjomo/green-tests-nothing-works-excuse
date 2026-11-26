@@ -9,8 +9,13 @@ const ENTRY =
 
 // Gate guard: the sealed scorer only accepts 1–140 characters, so refuse
 // to write anything outside that range instead of submitting an invalid line.
-if (ENTRY.length < 1 || ENTRY.length > 140 || ENTRY.trim().length === 0) {
-  throw new Error(`entry is ${ENTRY.length} chars, must be 1–140`);
+if (
+  ENTRY.length < 1 ||
+  ENTRY.length > 140 ||
+  ENTRY.trim().length === 0 ||
+  /[\r\n]/.test(ENTRY)
+) {
+  throw new Error(`entry is ${ENTRY.length} chars, must be 1–140 and one line`);
 }
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
 mkdirSync(outDir, { recursive: true });
